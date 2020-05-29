@@ -25,3 +25,15 @@ KernelCopyDataInternal:
 	li %r0, 0x2500
 	sc
 	blr
+
+.globl KernelReadSRsInternal
+KernelReadSRsInternal:
+    li %r0, 0x3600
+    sc
+    blr
+
+.globl KernelWriteSRsInternal
+KernelWriteSRsInternal:
+    li %r0, 0x0A00
+    sc
+    blr
