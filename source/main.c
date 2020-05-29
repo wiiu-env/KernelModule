@@ -19,7 +19,6 @@ extern void KernelCopyDataInternal(uint32_t dst, uint32_t src, uint32_t len);
 void kernelInitialize();
 
 extern void  KernelCopyData(uint32_t dst, uint32_t src, uint32_t len){
-    kernelInitialize();
     KernelCopyDataInternal(dst, src, len);
 }
 WUMS_EXPORT_FUNCTION(KernelCopyData);
@@ -88,6 +87,8 @@ void kernelInitialize() {
     ucSyscallsSetupRequired = 0;
 
     PatchSyscall(0x25, (uint32_t) SCKernelCopyData);
+WUMS_INITIALIZE(){
+    kernelInitialize();
 }
 
 int main(int argc, char **argv) {
