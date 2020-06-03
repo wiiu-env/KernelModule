@@ -72,8 +72,6 @@ void KernelReadSRsInternalFunc(sr_table_t * table) {
 }
 
 void KernelWriteSRsInternalFunc(sr_table_t * table) {
-    uint32_t i = 0;
-
     asm volatile("eieio; isync");
 
     // Writing didn't work for all at once so we only write number 8.
@@ -187,8 +185,4 @@ void kernelInitialize() {
 
 WUMS_INITIALIZE(){
     kernelInitialize();
-}
-
-int main(int argc, char **argv) {
-    return 0;
 }
