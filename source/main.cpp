@@ -18,13 +18,13 @@ typedef struct _sr_table_t {
     uint32_t sdr1;
 } sr_table_t;
 
-extern void SCKernelCopyData(uint32_t dst, uint32_t src, uint32_t len);
+extern "C" void SCKernelCopyData(uint32_t dst, uint32_t src, uint32_t len);
 
-extern void KernelCopyDataInternal(uint32_t dst, uint32_t src, uint32_t len);
+extern "C" void KernelCopyDataInternal(uint32_t dst, uint32_t src, uint32_t len);
 
-extern void KernelWriteSRsInternal(sr_table_t *table);
+extern "C" void KernelWriteSRsInternal(sr_table_t *table);
 
-extern void KernelReadSRsInternal(sr_table_t *table);
+extern "C" void KernelReadSRsInternal(sr_table_t *table);
 
 void kernelInitialize();
 
