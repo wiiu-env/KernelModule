@@ -19,13 +19,16 @@ typedef struct _sr_table_t {
 } sr_table_t;
 
 extern void SCKernelCopyData(uint32_t dst, uint32_t src, uint32_t len);
+
 extern void KernelCopyDataInternal(uint32_t dst, uint32_t src, uint32_t len);
-extern void KernelWriteSRsInternal(sr_table_t * table);
-extern void KernelReadSRsInternal(sr_table_t * table);
+
+extern void KernelWriteSRsInternal(sr_table_t *table);
+
+extern void KernelReadSRsInternal(sr_table_t *table);
 
 void kernelInitialize();
 
-void KernelReadSRsInternalFunc(sr_table_t * table) {
+void KernelReadSRsInternalFunc(sr_table_t *table) {
     uint32_t i = 0;
 
     // calculate PT_size ((end-start)*8/4096)*4 or (end-start)/128
@@ -71,7 +74,7 @@ void KernelReadSRsInternalFunc(sr_table_t * table) {
     asm volatile("eieio; isync");
 }
 
-void KernelWriteSRsInternalFunc(sr_table_t * table) {
+void KernelWriteSRsInternalFunc(sr_table_t *table) {
     asm volatile("eieio; isync");
 
     // Writing didn't work for all at once so we only write number 8.
@@ -99,15 +102,15 @@ void KernelWriteSRsInternalFunc(sr_table_t * table) {
     asm volatile("isync");
 }
 
-void  KernelCopyData(uint32_t dst, uint32_t src, uint32_t len){
+void KernelCopyData(uint32_t dst, uint32_t src, uint32_t len) {
     KernelCopyDataInternal(dst, src, len);
 }
 
-void KernelWriteSRs(sr_table_t * table) {
+void KernelWriteSRs(sr_table_t *table) {
     KernelWriteSRsInternal(table);
 }
 
-void KernelReadSRs(sr_table_t * table) {
+void KernelReadSRs(sr_table_t *table) {
     KernelReadSRsInternal(table);
 }
 
@@ -173,7 +176,7 @@ void PatchSyscall(int index, uint32_t addr) {
 
 void kernelInitialize() {
     static uint8_t ucSyscallsSetupRequired = 1;
-    if (!ucSyscallsSetupRequired){
+    if (!ucSyscallsSetupRequired) {
         return;
     }
     ucSyscallsSetupRequired = 0;
@@ -183,6 +186,6 @@ void kernelInitialize() {
     PatchSyscall(0x0A, (uint32_t) KernelWriteSRsInternalFunc);
 }
 
-WUMS_INITIALIZE(){
+WUMS_INITIALIZE() {
     kernelInitialize();
 }
