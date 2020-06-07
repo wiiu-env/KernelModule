@@ -6,6 +6,7 @@
 #include <coreinit/cache.h>
 
 WUMS_MODULE_EXPORT_NAME("homebrew_kernel");
+WUMS_MODULE_INIT_BEFORE_ENTRYPOINT();
 
 #define KERN_SYSCALL_TBL1 0xFFE84C70 //Unknown
 #define KERN_SYSCALL_TBL2 0xFFE85070 //Games
