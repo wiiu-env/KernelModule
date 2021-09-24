@@ -15,7 +15,7 @@ WUMS_MODULE_INIT_BEFORE_RELOCATION_DONE_HOOK();
 #define KERN_SYSCALL_TBL4 0xFFEAAA60 //Home menu
 #define KERN_SYSCALL_TBL5 0xFFEAAE60 //Browser
 
-typedef struct _sr_table_t {
+typedef struct sr_table_t {
     uint32_t value[16];
     uint32_t sdr1;
 } sr_table_t;
