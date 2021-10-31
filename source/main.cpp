@@ -116,9 +116,6 @@ void KernelReadSRs(sr_table_t *table) {
     KernelReadSRsInternal(table);
 }
 
-WUMS_EXPORT_FUNCTION(KernelCopyData);
-WUMS_EXPORT_FUNCTION(KernelWriteSRs);
-WUMS_EXPORT_FUNCTION(KernelReadSRs);
 
 /* Write a 32-bit word with kernel permissions */
 void __attribute__ ((noinline)) kern_write(void *addr, uint32_t value) {
@@ -168,7 +165,7 @@ uint32_t __attribute__ ((noinline)) kern_read(const void *addr) {
     return result;
 }
 
-void PatchSyscall(int index, uint32_t addr) {
+void KernelPatchSyscall(int index, uint32_t addr) {
     kern_write((void *) (KERN_SYSCALL_TBL1 + index * 4), addr);
     kern_write((void *) (KERN_SYSCALL_TBL2 + index * 4), addr);
     kern_write((void *) (KERN_SYSCALL_TBL3 + index * 4), addr);
@@ -183,11 +180,16 @@ void kernelInitialize() {
     }
     ucSyscallsSetupRequired = 0;
 
-    PatchSyscall(0x25, (uint32_t) SCKernelCopyData);
-    PatchSyscall(0x36, (uint32_t) KernelReadSRsInternalFunc);
-    PatchSyscall(0x0A, (uint32_t) KernelWriteSRsInternalFunc);
+    KernelPatchSyscall(0x25, (uint32_t) SCKernelCopyData);
+    KernelPatchSyscall(0x36, (uint32_t) KernelReadSRsInternalFunc);
+    KernelPatchSyscall(0x0A, (uint32_t) KernelWriteSRsInternalFunc);
 }
 
 WUMS_INITIALIZE(myargs) {
     kernelInitialize();
 }
+
+WUMS_EXPORT_FUNCTION(KernelCopyData);
+WUMS_EXPORT_FUNCTION(KernelWriteSRs);
+WUMS_EXPORT_FUNCTION(KernelReadSRs);
+WUMS_EXPORT_FUNCTION(KernelPatchSyscall);
