@@ -1,9 +1,9 @@
+#include <coreinit/memorymap.h>
 #include <whb/log.h>
 #include <whb/log_udp.h>
-#include <coreinit/memorymap.h>
 
-#include <wums.h>
 #include <coreinit/cache.h>
+#include <wums.h>
 
 WUMS_MODULE_EXPORT_NAME("homebrew_kernel");
 WUMS_MODULE_SKIP_INIT_FINI();
@@ -38,39 +38,56 @@ void KernelReadSRsInternalFunc(sr_table_t *table) {
 
     asm volatile("eieio; isync");
 
-    asm volatile("mfspr %0, 25" : "=r" (table->sdr1));
+    asm volatile("mfspr %0, 25"
+                 : "=r"(table->sdr1));
 
-    asm volatile("mfsr %0, 0" : "=r" (table->value[i]));
+    asm volatile("mfsr %0, 0"
+                 : "=r"(table->value[i]));
     i++;
-    asm volatile("mfsr %0, 1" : "=r" (table->value[i]));
+    asm volatile("mfsr %0, 1"
+                 : "=r"(table->value[i]));
     i++;
-    asm volatile("mfsr %0, 2" : "=r" (table->value[i]));
+    asm volatile("mfsr %0, 2"
+                 : "=r"(table->value[i]));
     i++;
-    asm volatile("mfsr %0, 3" : "=r" (table->value[i]));
+    asm volatile("mfsr %0, 3"
+                 : "=r"(table->value[i]));
     i++;
-    asm volatile("mfsr %0, 4" : "=r" (table->value[i]));
+    asm volatile("mfsr %0, 4"
+                 : "=r"(table->value[i]));
     i++;
-    asm volatile("mfsr %0, 5" : "=r" (table->value[i]));
+    asm volatile("mfsr %0, 5"
+                 : "=r"(table->value[i]));
     i++;
-    asm volatile("mfsr %0, 6" : "=r" (table->value[i]));
+    asm volatile("mfsr %0, 6"
+                 : "=r"(table->value[i]));
     i++;
-    asm volatile("mfsr %0, 7" : "=r" (table->value[i]));
+    asm volatile("mfsr %0, 7"
+                 : "=r"(table->value[i]));
     i++;
-    asm volatile("mfsr %0, 8" : "=r" (table->value[i]));
+    asm volatile("mfsr %0, 8"
+                 : "=r"(table->value[i]));
     i++;
-    asm volatile("mfsr %0, 9" : "=r" (table->value[i]));
+    asm volatile("mfsr %0, 9"
+                 : "=r"(table->value[i]));
     i++;
-    asm volatile("mfsr %0, 10" : "=r" (table->value[i]));
+    asm volatile("mfsr %0, 10"
+                 : "=r"(table->value[i]));
     i++;
-    asm volatile("mfsr %0, 11" : "=r" (table->value[i]));
+    asm volatile("mfsr %0, 11"
+                 : "=r"(table->value[i]));
     i++;
-    asm volatile("mfsr %0, 12" : "=r" (table->value[i]));
+    asm volatile("mfsr %0, 12"
+                 : "=r"(table->value[i]));
     i++;
-    asm volatile("mfsr %0, 13" : "=r" (table->value[i]));
+    asm volatile("mfsr %0, 13"
+                 : "=r"(table->value[i]));
     i++;
-    asm volatile("mfsr %0, 14" : "=r" (table->value[i]));
+    asm volatile("mfsr %0, 14"
+                 : "=r"(table->value[i]));
     i++;
-    asm volatile("mfsr %0, 15" : "=r" (table->value[i]));
+    asm volatile("mfsr %0, 15"
+                 : "=r"(table->value[i]));
     i++;
 
     asm volatile("eieio; isync");
@@ -90,7 +107,9 @@ void KernelWriteSRsInternalFunc(sr_table_t *table) {
     asm volatile("mtsr 5, %0" : : "r" (table->value[i])); i++;*/
     //asm volatile("mtsr 6, %0" : : "r" (table->value[6])); i++;
     /*asm volatile("mtsr 7, %0" : : "r" (table->value[i])); i++;*/
-    asm volatile("mtsr 8, %0" : : "r" (table->value[8]));
+    asm volatile("mtsr 8, %0"
+                 :
+                 : "r"(table->value[8]));
     //i++;
     /*asm volatile("mtsr 9, %0" : : "r" (table->value[i])); i++;
     asm volatile("mtsr 10, %0" : : "r" (table->value[i])); i++;
@@ -118,49 +137,47 @@ void KernelReadSRs(sr_table_t *table) {
 
 
 /* Write a 32-bit word with kernel permissions */
-void __attribute__ ((noinline)) kern_write(void *addr, uint32_t value) {
-    asm volatile (
-    "li 3,1\n"
-    "li 4,0\n"
-    "mr 5,%1\n"
-    "li 6,0\n"
-    "li 7,0\n"
-    "lis 8,1\n"
-    "mr 9,%0\n"
-    "mr %1,1\n"
-    "li 0,0x3500\n"
-    "sc\n"
-    "nop\n"
-    "mr 1,%1\n"
-    :
-    :    "r"(addr), "r"(value)
-    :    "memory", "ctr", "lr", "0", "3", "4", "5", "6", "7", "8", "9", "10",
-    "11", "12"
-    );
+void __attribute__((noinline)) kern_write(void *addr, uint32_t value) {
+    asm volatile(
+            "li 3,1\n"
+            "li 4,0\n"
+            "mr 5,%1\n"
+            "li 6,0\n"
+            "li 7,0\n"
+            "lis 8,1\n"
+            "mr 9,%0\n"
+            "mr %1,1\n"
+            "li 0,0x3500\n"
+            "sc\n"
+            "nop\n"
+            "mr 1,%1\n"
+            :
+            : "r"(addr), "r"(value)
+            : "memory", "ctr", "lr", "0", "3", "4", "5", "6", "7", "8", "9", "10",
+              "11", "12");
 }
 
 /* Read a 32-bit word with kernel permissions */
-uint32_t __attribute__ ((noinline)) kern_read(const void *addr) {
+uint32_t __attribute__((noinline)) kern_read(const void *addr) {
     uint32_t result;
-    asm volatile (
-    "li 3,1\n"
-    "li 4,0\n"
-    "li 5,0\n"
-    "li 6,0\n"
-    "li 7,0\n"
-    "lis 8,1\n"
-    "mr 9,%1\n"
-    "li 0,0x3400\n"
-    "mr %0,1\n"
-    "sc\n"
-    "nop\n"
-    "mr 1,%0\n"
-    "mr %0,3\n"
-    :    "=r"(result)
-    :    "b"(addr)
-    :    "memory", "ctr", "lr", "0", "3", "4", "5", "6", "7", "8", "9", "10",
-    "11", "12"
-    );
+    asm volatile(
+            "li 3,1\n"
+            "li 4,0\n"
+            "li 5,0\n"
+            "li 6,0\n"
+            "li 7,0\n"
+            "lis 8,1\n"
+            "mr 9,%1\n"
+            "li 0,0x3400\n"
+            "mr %0,1\n"
+            "sc\n"
+            "nop\n"
+            "mr 1,%0\n"
+            "mr %0,3\n"
+            : "=r"(result)
+            : "b"(addr)
+            : "memory", "ctr", "lr", "0", "3", "4", "5", "6", "7", "8", "9", "10",
+              "11", "12");
 
     return result;
 }
