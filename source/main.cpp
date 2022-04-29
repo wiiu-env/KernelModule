@@ -105,12 +105,15 @@ void KernelWriteSRsInternalFunc(sr_table_t *table) {
     asm volatile("mtsr 3, %0" : : "r" (table->value[i])); i++;
     asm volatile("mtsr 4, %0" : : "r" (table->value[i])); i++;
     asm volatile("mtsr 5, %0" : : "r" (table->value[i])); i++;*/
-    //asm volatile("mtsr 6, %0" : : "r" (table->value[6])); i++;
-    /*asm volatile("mtsr 7, %0" : : "r" (table->value[i])); i++;*/
+    asm volatile("mtsr 6, %0"
+                 :
+                 : "r"(table->value[6]));
+    asm volatile("mtsr 7, %0"
+                 :
+                 : "r"(table->value[7]));
     asm volatile("mtsr 8, %0"
                  :
                  : "r"(table->value[8]));
-    //i++;
     /*asm volatile("mtsr 9, %0" : : "r" (table->value[i])); i++;
     asm volatile("mtsr 10, %0" : : "r" (table->value[i])); i++;
     asm volatile("mtsr 11, %0" : : "r" (table->value[i])); i++;
