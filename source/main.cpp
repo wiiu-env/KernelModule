@@ -142,6 +142,9 @@ void KernelReadSRs(sr_table_t *table) {
 /* Write a 32-bit word with kernel permissions */
 void __attribute__((noinline)) kern_write(void *addr, uint32_t value) {
     asm volatile(
+            "stwu 1, -0x10(1)\n"
+            "stw 2,  0x08(1)\n"
+            "stw 13, 0x0C(1)\n"
             "li 3,1\n"
             "li 4,0\n"
             "mr 5,%1\n"
@@ -154,6 +157,9 @@ void __attribute__((noinline)) kern_write(void *addr, uint32_t value) {
             "sc\n"
             "nop\n"
             "mr 1,%1\n"
+            "lwz 2, 0x8(1)\n"
+            "lwz 13, 0xC(1)\n"
+            "addi 1, 1, 0x10\n"
             :
             : "r"(addr), "r"(value)
             : "memory", "ctr", "lr", "0", "3", "4", "5", "6", "7", "8", "9", "10",
