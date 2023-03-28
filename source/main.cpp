@@ -1,19 +1,22 @@
+#include "version.h"
+#include <coreinit/cache.h>
 #include <coreinit/memorymap.h>
 #include <whb/log.h>
 #include <whb/log_udp.h>
-
-#include <coreinit/cache.h>
 #include <wums.h>
 
 WUMS_MODULE_EXPORT_NAME("homebrew_kernel");
 WUMS_MODULE_SKIP_INIT_FINI();
 WUMS_MODULE_INIT_BEFORE_RELOCATION_DONE_HOOK();
 
-#define KERN_SYSCALL_TBL1 0xFFE84C70 //Unknown
-#define KERN_SYSCALL_TBL2 0xFFE85070 //Games
-#define KERN_SYSCALL_TBL3 0xFFE85470 //Loader
-#define KERN_SYSCALL_TBL4 0xFFEAAA60 //Home menu
-#define KERN_SYSCALL_TBL5 0xFFEAAE60 //Browser
+#define MODULE_VERSION      "v0.2"
+#define MODULE_VERSION_FULL MODULE_VERSION MODULE_VERSION_EXTRA
+
+#define KERN_SYSCALL_TBL1   0xFFE84C70 //Unknown
+#define KERN_SYSCALL_TBL2   0xFFE85070 //Games
+#define KERN_SYSCALL_TBL3   0xFFE85470 //Loader
+#define KERN_SYSCALL_TBL4   0xFFEAAA60 //Home menu
+#define KERN_SYSCALL_TBL5   0xFFEAAE60 //Browser
 
 typedef struct sr_table_t {
     uint32_t value[16];
@@ -213,6 +216,10 @@ void kernelInitialize() {
 
 WUMS_INITIALIZE(myargs) {
     kernelInitialize();
+}
+
+WUMS_APPLICATION_STARTS() {
+    OSReport("Running KernelModule " MODULE_VERSION_FULL "\n");
 }
 
 WUMS_EXPORT_FUNCTION(KernelCopyData);
