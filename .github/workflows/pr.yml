@@ -17,7 +17,7 @@ jobs:
     - uses: actions/checkout@v3
     - name: create version.h
       run: |
-        git_hash=$(git rev-parse --short "$GITHUB_SHA")
+        git_hash=$(git rev-parse --short "${{ github.event.pull_request.head.sha }}")
         cat <<EOF > ./source/version.h
         #pragma once
         #define MODULE_VERSION_EXTRA " (nightly-$git_hash)"
