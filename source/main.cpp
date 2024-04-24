@@ -202,20 +202,14 @@ void KernelPatchSyscall(int index, uint32_t addr) {
     kern_write((void *) (KERN_SYSCALL_TBL5 + index * 4), addr);
 }
 
-void kernelInitialize() {
-    static uint8_t ucSyscallsSetupRequired = 1;
-    if (!ucSyscallsSetupRequired) {
-        return;
-    }
-    ucSyscallsSetupRequired = 0;
-
+void KernelSetupDefaultSyscalls() {
     KernelPatchSyscall(0x25, (uint32_t) SCKernelCopyData);
     KernelPatchSyscall(0x36, (uint32_t) KernelReadSRsInternalFunc);
     KernelPatchSyscall(0x0A, (uint32_t) KernelWriteSRsInternalFunc);
 }
 
 WUMS_INITIALIZE(myargs) {
-    kernelInitialize();
+    KernelSetupDefaultSyscalls();
 }
 
 WUMS_APPLICATION_STARTS() {
@@ -226,3 +220,4 @@ WUMS_EXPORT_FUNCTION(KernelCopyData);
 WUMS_EXPORT_FUNCTION(KernelWriteSRs);
 WUMS_EXPORT_FUNCTION(KernelReadSRs);
 WUMS_EXPORT_FUNCTION(KernelPatchSyscall);
+WUMS_EXPORT_FUNCTION(KernelSetupDefaultSyscalls);
