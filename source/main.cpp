@@ -208,7 +208,7 @@ void KernelSetupDefaultSyscalls() {
     KernelPatchSyscall(0x0A, (uint32_t) KernelWriteSRsInternalFunc);
 }
 
-WUMS_INITIALIZE(myargs) {
+WUMS_INITIALIZE() {
     KernelSetupDefaultSyscalls();
 }
 
